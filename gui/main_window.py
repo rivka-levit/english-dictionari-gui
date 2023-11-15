@@ -1,18 +1,15 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon, QFont
 from PyQt6.QtWidgets import (
-    QApplication,
     QMainWindow,
     QWidget,
     QVBoxLayout,
     QHBoxLayout,
     QLabel,
     QPushButton,
-    QLineEdit,
-    QSizePolicy
+    QLineEdit
 )
 
-import sys
 from dictionary.api_dict import ApiDictionary
 
 
@@ -30,7 +27,7 @@ class MainWindow(QMainWindow):
     def _set_main_window(self):
         self.setWindowIcon(QIcon('assets/icon.svg'))
         self.setWindowTitle('Word Definition')
-        self.setGeometry(0, 0, 500, 350)
+        self.setGeometry(0, 0, 380, 450)
         self._center()
 
         widget = QWidget()
@@ -41,6 +38,12 @@ class MainWindow(QMainWindow):
             """
                 QWidget {
                     background-color: #f5efe6;
+                }
+                QLabel {
+                    border: 2px solid #fefcf9;
+                    border-radius: 5px;
+                    padding: 8px;
+                    color: #31373e;
                 }
             """
         )
@@ -53,30 +56,15 @@ class MainWindow(QMainWindow):
         main_layout.addLayout(self._set_nested_layout())
 
         self.wrd_out.setFont(QFont('Helvetica', 14, weight=700))
-        self.wrd_out.setFixedHeight(40)
+        self.wrd_out.setFixedHeight(50)
         self.wrd_out.setStyleSheet(
-            """
-                QLabel {
-                    color: #31373e;
-                    border: 2px solid #fefcf9;
-                    border-radius: 5px;
-                }
-            """
+            f'qproperty-alignment: {Qt.AlignmentFlag.AlignCenter}'
         )
         main_layout.addWidget(self.wrd_out)
 
         self.definitions.setMinimumHeight(100)
         self.definitions.setWordWrap(True)
-        self.definitions.setStyleSheet(
-            """
-                QLabel {
-                    border: 2px solid #fefcf9;
-                    border-radius: 5px;
-                    padding: 8px;
-                }
-            """
-        )
-        self.definitions.setFont(QFont('Helvetica', 12))
+        self.definitions.setFont(QFont('Helvetica', 10))
         main_layout.addWidget(self.definitions)
 
         return main_layout
@@ -130,20 +118,14 @@ class MainWindow(QMainWindow):
         word = self.wrd_input.text()
         if word:
             self.wrd_out.setText(f'{word}')
-            self.definitions.setText('\n'.join(dct.get_definition(word)))
+            self.definitions.setText('\n\n'.join(dct.get_definition(word)))
             self.wrd_input.clear()
         else:
             self.definitions.setText('')
+            self.wrd_out.clear()
 
     def _center(self):
         qt_rectangle = self.frameGeometry()
         center_point = self.screen().availableGeometry().center()
         qt_rectangle.moveCenter(center_point)
         self.move(qt_rectangle.topLeft())
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
-    sys.exit(app.exec())

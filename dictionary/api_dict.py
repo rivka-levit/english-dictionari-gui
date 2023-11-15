@@ -12,14 +12,18 @@ class ApiDictionary:
 
         r = requests.get(f'{self.base_url}{word}')
 
-        definitions = list()
+        if r:
+            definitions = list()
 
-        for i in json.loads(r.text):
-            for j in i['meanings']:
-                for dfn in j['definitions']:
-                    definitions.append(dfn['definition'])
+            for i in r.json():
+                for j in i['meanings']:
+                    for dfn in j['definitions']:
+                        definitions.append(dfn['definition'])
 
-        return definitions
+            return definitions
+
+        else:
+            return ['Not Found... Check you word, please.']
 
 
 # word = 'phone'
