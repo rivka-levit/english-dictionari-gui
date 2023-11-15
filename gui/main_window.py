@@ -7,7 +7,8 @@ from PyQt6.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QPushButton,
-    QLineEdit
+    QLineEdit,
+    QScrollArea
 )
 
 from dictionary.api_dict import ApiDictionary
@@ -39,12 +40,6 @@ class MainWindow(QMainWindow):
                 QWidget {
                     background-color: #f5efe6;
                 }
-                QLabel {
-                    border: 2px solid #fefcf9;
-                    border-radius: 5px;
-                    padding: 8px;
-                    color: #31373e;
-                }
             """
         )
 
@@ -58,14 +53,39 @@ class MainWindow(QMainWindow):
         self.wrd_out.setFont(QFont('Helvetica', 14, weight=700))
         self.wrd_out.setFixedHeight(50)
         self.wrd_out.setStyleSheet(
-            f'qproperty-alignment: {Qt.AlignmentFlag.AlignCenter}'
+            f'qproperty-alignment: {Qt.AlignmentFlag.AlignCenter}; '
+            f'border: 2px solid #fefcf9; '
+            f'border-radius: 5px; '
+            f'padding: 8px; '
+            f'color: #31373e;'
         )
         main_layout.addWidget(self.wrd_out)
 
         self.definitions.setMinimumHeight(100)
         self.definitions.setWordWrap(True)
         self.definitions.setFont(QFont('Helvetica', 10))
-        main_layout.addWidget(self.definitions)
+
+        scroll_box = QScrollArea()
+        scroll_box.setVerticalScrollBarPolicy(
+            Qt.ScrollBarPolicy.ScrollBarAsNeeded
+        )
+        scroll_box.setHorizontalScrollBarPolicy(
+            Qt.ScrollBarPolicy.ScrollBarAlwaysOff
+        )
+        scroll_box.setWidgetResizable(True)
+        scroll_box.setStyleSheet(
+            """
+                QScrollArea {
+                    border: 2px solid #fefcf9;
+                    border-radius: 5px;
+                    padding: 10px 0 10px 10px;
+                    color: #31373e;
+                }
+            """
+        )
+        scroll_box.setWidget(self.definitions)
+
+        main_layout.addWidget(scroll_box)
 
         return main_layout
 
@@ -118,7 +138,9 @@ class MainWindow(QMainWindow):
         word = self.wrd_input.text()
         if word:
             self.wrd_out.setText(f'{word}')
-            self.definitions.setText('\n\n'.join(dct.get_definition(word)))
+            self.definitions.setText(
+                f'\n{"-" * 55}\n'.join(dct.get_definition(word))
+            )
             self.wrd_input.clear()
         else:
             self.definitions.setText('')
