@@ -11,6 +11,7 @@ from PyQt6.QtWidgets import (
 )
 
 import sys
+from pathlib import Path
 
 
 class MainWindow(QMainWindow):
@@ -23,7 +24,7 @@ class MainWindow(QMainWindow):
         self._set_main_window()
 
     def _set_main_window(self):
-        self.setWindowIcon(QIcon('icon.svg'))
+        self.setWindowIcon(QIcon('assets/icon.svg'))
         self.setWindowTitle('Word Definition')
         self.setGeometry(0, 0, 500, 300)
         self._center()
