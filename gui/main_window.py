@@ -1,3 +1,4 @@
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon, QFont
 from PyQt6.QtWidgets import (
     QApplication,
@@ -8,6 +9,7 @@ from PyQt6.QtWidgets import (
     QLabel,
     QPushButton,
     QLineEdit,
+    QSizePolicy
 )
 
 import sys
@@ -21,28 +23,24 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.wrd_input = QLineEdit()
+        self.wrd_out = QLabel('')
         self.definitions = QLabel('')
         self._set_main_window()
 
     def _set_main_window(self):
         self.setWindowIcon(QIcon('assets/icon.svg'))
         self.setWindowTitle('Word Definition')
-        self.setGeometry(0, 0, 500, 300)
+        self.setGeometry(0, 0, 500, 350)
         self._center()
 
         widget = QWidget()
         widget.setLayout(self._set_main_layout())
-        # widget.setStyleSheet('background-color: #F2EDDC;')
         widget.setContentsMargins(20, 20, 20, 20)
         self.setCentralWidget(widget)
         self.setStyleSheet(
             """
                 QWidget {
                     background-color: #f5efe6;
-                }
-                QLabel {
-                    border: 2px solid #fefcf9;
-                    border-radius: 5px;
                 }
             """
         )
@@ -54,7 +52,30 @@ class MainWindow(QMainWindow):
         self._set_nested_layout()
         main_layout.addLayout(self._set_nested_layout())
 
+        self.wrd_out.setFont(QFont('Helvetica', 14, weight=700))
+        self.wrd_out.setFixedHeight(40)
+        self.wrd_out.setStyleSheet(
+            """
+                QLabel {
+                    color: #31373e;
+                    border: 2px solid #fefcf9;
+                    border-radius: 5px;
+                }
+            """
+        )
+        main_layout.addWidget(self.wrd_out)
+
         self.definitions.setMinimumHeight(100)
+        self.definitions.setWordWrap(True)
+        self.definitions.setStyleSheet(
+            """
+                QLabel {
+                    border: 2px solid #fefcf9;
+                    border-radius: 5px;
+                    padding: 8px;
+                }
+            """
+        )
         self.definitions.setFont(QFont('Helvetica', 12))
         main_layout.addWidget(self.definitions)
 
@@ -72,6 +93,7 @@ class MainWindow(QMainWindow):
                     border: 2px solid #aebdca;
                     border-radius: 5px;
                     font-size: 26;
+                    color: #31373e;
                 }
             """
         )
@@ -107,6 +129,7 @@ class MainWindow(QMainWindow):
         dct = ApiDictionary()
         word = self.wrd_input.text()
         if word:
+            self.wrd_out.setText(f'{word}')
             self.definitions.setText('\n'.join(dct.get_definition(word)))
             self.wrd_input.clear()
         else:
