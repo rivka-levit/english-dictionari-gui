@@ -1,5 +1,4 @@
 import requests
-import json
 
 
 class ApiDictionary:
@@ -24,8 +23,3 @@ class ApiDictionary:
 
         else:
             return ['Not Found... Check you word, please.']
-
-
-# word = 'phone'
-# dfs = ApiDictionary().get_definition(word)
-# print(type(dfs))

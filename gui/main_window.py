@@ -47,6 +47,18 @@ class MainWindow(QMainWindow):
         main_layout = QVBoxLayout()
         main_layout.setSpacing(15)
 
+        header = QLabel('Word Definition')
+        header.setFont(QFont('Helvetica', 18, 900))
+        header.setStyleSheet(
+            """
+                QLabel {
+                    color: #7895b2;
+                    margin-bottom: 8px;
+                }
+            """
+        )
+        main_layout.addWidget(header, alignment=Qt.AlignmentFlag.AlignHCenter)
+
         self._set_nested_layout()
         main_layout.addLayout(self._set_nested_layout())
 
@@ -97,6 +109,7 @@ class MainWindow(QMainWindow):
         self.wrd_input.setStyleSheet(
             """
                 QLineEdit {
+                    background-color: #fefcf9;
                     padding: 6px;
                     border: 2px solid #aebdca;
                     border-radius: 5px;
