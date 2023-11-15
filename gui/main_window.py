@@ -11,7 +11,6 @@ from PyQt6.QtWidgets import (
 )
 
 import sys
-from pathlib import Path
 
 
 class MainWindow(QMainWindow):
