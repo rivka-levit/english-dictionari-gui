@@ -11,6 +11,7 @@ from PyQt6.QtWidgets import (
 )
 
 import sys
+from dictionary.api_dict import ApiDictionary
 
 
 class MainWindow(QMainWindow):
@@ -18,6 +19,7 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
+
         self.wrd_input = QLineEdit()
         self.definitions = QLabel('')
         self._set_main_window()
@@ -38,6 +40,7 @@ class MainWindow(QMainWindow):
         main_layout = QVBoxLayout()
         main_layout.setSpacing(15)
 
+        self._set_nested_layout()
         main_layout.addLayout(self._set_nested_layout())
 
         self.definitions.setMinimumHeight(100)
@@ -47,13 +50,19 @@ class MainWindow(QMainWindow):
 
     def _set_nested_layout(self):
         nest_layout = QHBoxLayout()
-
         nest_layout.addWidget(self.wrd_input, stretch=5)
 
         btn = QPushButton('Convert')
         nest_layout.addWidget(btn, stretch=1)
+        btn.clicked.connect(self._set_output)
 
         return nest_layout
+
+    def _set_output(self):
+        dct = ApiDictionary()
+        word = self.wrd_input.text()
+        self.definitions.setText('\n'.join(dct.get_definition(word)))
+        self.wrd_input.clear()
 
     def _center(self):
         qt_rectangle = self.frameGeometry()

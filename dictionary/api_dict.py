@@ -1,4 +1,5 @@
 import requests
+import json
 
 
 class ApiDictionary:
@@ -13,9 +14,14 @@ class ApiDictionary:
 
         definitions = list()
 
-        for i in r.json():
+        for i in json.loads(r.text):
             for j in i['meanings']:
                 for dfn in j['definitions']:
                     definitions.append(dfn['definition'])
 
         return definitions
+
+
+# word = 'phone'
+# dfs = ApiDictionary().get_definition(word)
+# print(type(dfs))
