@@ -1,3 +1,4 @@
+from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import (
     QApplication,
     QMainWindow,
@@ -22,6 +23,7 @@ class MainWindow(QMainWindow):
         self._set_main_window()
 
     def _set_main_window(self):
+        self.setWindowIcon(QIcon('icon.svg'))
         self.setWindowTitle('Word Definition')
         self.setGeometry(0, 0, 500, 300)
         self._center()
