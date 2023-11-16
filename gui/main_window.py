@@ -109,6 +109,12 @@ class MainWindow(QMainWindow):
 
         return main_layout
 
+    def keyPressEvent(self, event):
+        if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
+            self._set_output()
+        else:
+            super().keyPressEvent(event)
+
     def set_nested_layout(self):
         nest_layout = QHBoxLayout()
 
