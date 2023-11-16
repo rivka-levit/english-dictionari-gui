@@ -5,8 +5,6 @@ from PyQt6.QtWidgets import QLineEdit, QLabel
 from PyQt6.QtGui import QFont
 from PyQt6.QtCore import Qt
 
-from .fonts import CustomFonts
-
 
 class WordInputField(QLineEdit):
     """Text field to enter the word."""
@@ -15,7 +13,7 @@ class WordInputField(QLineEdit):
         super().__init__()
 
         self.setFont(QFont('Helvetica', 14))
-        self.setFixedHeight(50)
+        self.setFixedHeight(40)
         self.setPlaceholderText('Enter a word here...')
         self.setStyleSheet(
             """

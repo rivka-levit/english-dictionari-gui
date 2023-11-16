@@ -1,19 +1,18 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QIcon, QFont, QFontDatabase
+from PyQt6.QtGui import QIcon, QFont
 from PyQt6.QtWidgets import (
     QMainWindow,
     QWidget,
     QVBoxLayout,
     QHBoxLayout,
     QLabel,
-    QPushButton,
-    QLineEdit,
     QScrollArea
 )
 
 from dictionary.api_dict import ApiDictionary
 from .word import WordInputField, WordOutputField
 from .fonts import CustomFonts
+from .buttons import SendButton
 
 
 class MainWindow(QMainWindow):
@@ -31,14 +30,8 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(QIcon('assets/icon.svg'))
         self.setWindowTitle('Word Definition')
         self.setGeometry(0, 0, 380, 450)
+        self.setStyleSheet('background-color: #f5efe6;')
         self._center()
-        self.setStyleSheet(
-            """
-                QWidget {
-                    background-color: #f5efe6;
-                }
-            """
-        )
 
         widget = QWidget()
         widget.setLayout(self.set_main_layout())
@@ -54,9 +47,11 @@ class MainWindow(QMainWindow):
         header.setStyleSheet('color: #7895b2;')
         main_layout.addWidget(header, alignment=Qt.AlignmentFlag.AlignHCenter)
 
+        # Word input field and send button
         self.set_nested_layout()
-
         main_layout.addLayout(self.set_nested_layout())
+
+        # Word output field
         main_layout.addWidget(self.wrd_out)
 
         self.definitions.setMinimumHeight(100)
@@ -98,27 +93,7 @@ class MainWindow(QMainWindow):
         nest_layout = QHBoxLayout()
         nest_layout.addWidget(self.wrd_input, stretch=5)
 
-        btn = QPushButton('Send')
-        btn.setFixedHeight(40)
-        btn.setMinimumWidth(80)
-        btn.setFont(QFont(CustomFonts().fr_goth, 18))
-        btn.setStyleSheet(
-            """
-                QPushButton {
-                    background-color: #7895b2;
-                    color: #f5efe6;
-                    border-radius: 5px;
-                }
-                QPushButton:hover {
-                    background-color: #849fb9;
-                    color: #f5efe6;
-                }
-                QPushButton:pressed {
-                    background-color: #486683;
-                    color: #f5efe6;
-                }
-            """
-        )
+        btn = SendButton()
         nest_layout.addWidget(btn, stretch=1)
         btn.clicked.connect(self._set_output)
 
