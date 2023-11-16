@@ -49,6 +49,6 @@ class WordOutputField(QLabel):
             f'qproperty-alignment: {Qt.AlignmentFlag.AlignCenter}; '
             f'border-radius: 5px; '
             f'padding: 8px; '
-            f'color: #31373e;'
+            f'color: #3d4650;'
             f'background-color: #fefcf9;'
         )
