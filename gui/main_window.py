@@ -12,6 +12,8 @@ from PyQt6.QtWidgets import (
 )
 
 from dictionary.api_dict import ApiDictionary
+from .word import WordInputField, WordOutputField
+from .fonts import CustomFonts
 
 
 class MainWindow(QMainWindow):
@@ -20,11 +22,9 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.wrd_input = QLineEdit()
-        self.wrd_out = QLabel('')
+        self.wrd_input = WordInputField()
+        self.wrd_out = WordOutputField()
         self.definitions = QLabel('')
-        self.font_bello = self.add_font('assets/Bello-SmCp.ttf')
-        self.font_franklin = self.add_font('assets/FrGoth-MdReg.ttf')
         self.set_ui()
 
     def set_ui(self):
@@ -45,39 +45,18 @@ class MainWindow(QMainWindow):
         widget.setContentsMargins(20, 0, 20, 20)
         self.setCentralWidget(widget)
 
-    @staticmethod
-    def add_font(filename):
-        font_id = QFontDatabase.addApplicationFont(filename)
-        families = QFontDatabase.applicationFontFamilies(font_id)
-        return families[0]
-
     def set_main_layout(self):
         main_layout = QVBoxLayout()
         main_layout.setSpacing(15)
 
         header = QLabel('Word Definition')
-        header.setFont(QFont(self.font_bello, 28, 900))
-        header.setStyleSheet(
-            """
-                QLabel {
-                    color: #7895b2;
-                }
-            """
-        )
+        header.setFont(QFont(CustomFonts().bello, 28, 900))
+        header.setStyleSheet('color: #7895b2;')
         main_layout.addWidget(header, alignment=Qt.AlignmentFlag.AlignHCenter)
 
         self.set_nested_layout()
-        main_layout.addLayout(self.set_nested_layout())
 
-        self.wrd_out.setFont(QFont('Helvetica', 14, weight=700))
-        self.wrd_out.setFixedHeight(50)
-        self.wrd_out.setStyleSheet(
-            f'qproperty-alignment: {Qt.AlignmentFlag.AlignCenter}; '
-            f'border-radius: 5px; '
-            f'padding: 8px; '
-            f'color: #31373e;'
-            f'background-color: #fefcf9;'
-        )
+        main_layout.addLayout(self.set_nested_layout())
         main_layout.addWidget(self.wrd_out)
 
         self.definitions.setMinimumHeight(100)
@@ -117,27 +96,12 @@ class MainWindow(QMainWindow):
 
     def set_nested_layout(self):
         nest_layout = QHBoxLayout()
-
-        self.wrd_input.setFont(QFont('Helvetica', 14))
-        self.wrd_input.setPlaceholderText('Enter a word here...')
-        self.wrd_input.setStyleSheet(
-            """
-                QLineEdit {
-                    background-color: #fefcf9;
-                    padding: 6px;
-                    border: 2px solid #aebdca;
-                    border-radius: 5px;
-                    font-size: 26;
-                    color: #31373e;
-                }
-            """
-        )
         nest_layout.addWidget(self.wrd_input, stretch=5)
 
         btn = QPushButton('Send')
         btn.setFixedHeight(40)
         btn.setMinimumWidth(80)
-        btn.setFont(QFont(self.font_franklin, 18))
+        btn.setFont(QFont(CustomFonts().fr_goth, 18))
         btn.setStyleSheet(
             """
                 QPushButton {
