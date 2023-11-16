@@ -29,7 +29,7 @@ class MainWindow(QMainWindow):
     def set_ui(self):
         """Set user interface."""
 
-        self.setWindowIcon(QIcon('assets/icon.svg'))
+        self.setWindowIcon(QIcon('assets/icon.ico'))
         self.setWindowTitle('Word Definition')
         self.setStyleSheet('background-color: #f5efe6;')
         self.setGeometry(0, 0, 380, 450)
