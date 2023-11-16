@@ -7,10 +7,14 @@ from PyQt6.QtCore import Qt
 
 
 class WordInputField(QLineEdit):
-    """Text field to enter the word."""
+    """Text field to enter a word."""
 
     def __init__(self):
         super().__init__()
+        self.set_ui()
+
+    def set_ui(self):
+        """Set user interface."""
 
         self.setFont(QFont('Helvetica', 14))
         self.setFixedHeight(40)
@@ -34,8 +38,12 @@ class WordOutputField(QLabel):
 
     def __init__(self):
         super().__init__()
+        self.set_ui()
 
-        self.setFont(QFont('Helvetica', 14, weight=700))
+    def set_ui(self):
+        """Set user interface."""
+
+        self.setFont(QFont('Helvetica', 18, weight=700))
         self.setFixedHeight(50)
         self.setStyleSheet(
             f'qproperty-alignment: {Qt.AlignmentFlag.AlignCenter}; '

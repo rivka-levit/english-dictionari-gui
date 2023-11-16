@@ -5,14 +5,14 @@ from PyQt6.QtWidgets import (
     QWidget,
     QVBoxLayout,
     QHBoxLayout,
-    QLabel,
-    QScrollArea
+    QLabel
 )
 
 from dictionary.api_dict import ApiDictionary
 from .word import WordInputField, WordOutputField
 from .fonts import CustomFonts
 from .buttons import SendButton
+from .scroll_box import ScrollDefinitions
 
 
 class MainWindow(QMainWindow):
@@ -23,15 +23,17 @@ class MainWindow(QMainWindow):
 
         self.wrd_input = WordInputField()
         self.wrd_out = WordOutputField()
-        self.definitions = QLabel('')
+        self.scroll_box = ScrollDefinitions()
         self.set_ui()
 
     def set_ui(self):
+        """Set user interface."""
+
         self.setWindowIcon(QIcon('assets/icon.svg'))
         self.setWindowTitle('Word Definition')
-        self.setGeometry(0, 0, 380, 450)
         self.setStyleSheet('background-color: #f5efe6;')
-        self._center()
+        self.setGeometry(0, 0, 380, 450)
+        self.center_window()
 
         widget = QWidget()
         widget.setLayout(self.set_main_layout())
@@ -39,6 +41,8 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(widget)
 
     def set_main_layout(self):
+        """Layout contains all the elements of the main window."""
+
         main_layout = QVBoxLayout()
         main_layout.setSpacing(15)
 
@@ -51,68 +55,52 @@ class MainWindow(QMainWindow):
         self.set_nested_layout()
         main_layout.addLayout(self.set_nested_layout())
 
-        # Word output field
+        # Word output area
         main_layout.addWidget(self.wrd_out)
 
-        self.definitions.setMinimumHeight(100)
-        self.definitions.setWordWrap(True)
-        self.definitions.setFont(QFont('Helvetica', 10))
-        self.definitions.setStyleSheet('background-color: #fefcf9;')
-
-        scroll_box = QScrollArea()
-        scroll_box.setVerticalScrollBarPolicy(
-            Qt.ScrollBarPolicy.ScrollBarAsNeeded
-        )
-        scroll_box.setHorizontalScrollBarPolicy(
-            Qt.ScrollBarPolicy.ScrollBarAlwaysOff
-        )
-        scroll_box.setWidgetResizable(True)
-        scroll_box.setStyleSheet(
-            """
-                QScrollArea {
-                    border-radius: 5px;
-                    padding: 10px 0 10px 10px;
-                    color: #31373e;
-                    background-color: #fefcf9;
-                }
-            """
-        )
-        scroll_box.setWidget(self.definitions)
-
-        main_layout.addWidget(scroll_box)
+        # Definitions output area
+        main_layout.addWidget(self.scroll_box)
 
         return main_layout
 
-    def keyPressEvent(self, event):
-        if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
-            self._set_output()
-        else:
-            super().keyPressEvent(event)
-
     def set_nested_layout(self):
+        """Layout contains word input field and send button."""
+
         nest_layout = QHBoxLayout()
         nest_layout.addWidget(self.wrd_input, stretch=5)
 
         btn = SendButton()
         nest_layout.addWidget(btn, stretch=1)
-        btn.clicked.connect(self._set_output)
+        btn.clicked.connect(self.slot_output)
 
         return nest_layout
 
-    def _set_output(self):
+    def keyPressEvent(self, event):
+        """Handle Enter key pressed in word input field."""
+
+        if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
+            self.slot_output()
+        else:
+            super().keyPressEvent(event)
+
+    def slot_output(self):
+        """Output definitions to the scroll area."""
+
         dct = ApiDictionary()
         word = self.wrd_input.text()
         if word:
             self.wrd_out.setText(f'{word}')
-            self.definitions.setText(
+            self.scroll_box.definitions.setText(
                 f'\n{"-" * 55}\n'.join(dct.get_definition(word))
             )
             self.wrd_input.clear()
         else:
-            self.definitions.setText('')
+            self.scroll_box.definitions.setText('')
             self.wrd_out.clear()
 
-    def _center(self):
+    def center_window(self):
+        """Open main window always in the center."""
+
         qt_rectangle = self.frameGeometry()
         center_point = self.screen().availableGeometry().center()
         qt_rectangle.moveCenter(center_point)

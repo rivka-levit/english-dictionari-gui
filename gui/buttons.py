@@ -16,6 +16,8 @@ class SendButton(QPushButton):
         self.set_ui()
 
     def set_ui(self):
+        """Set user interface."""
+
         self.setText('Send')
         self.setFixedHeight(40)
         self.setMinimumWidth(80)

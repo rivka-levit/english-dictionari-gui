@@ -14,6 +14,8 @@ class CustomFonts:
 
     @staticmethod
     def add_font(filename):
+        """Add font to font database and return font family name."""
+
         font_id = QFontDatabase.addApplicationFont(filename)
         families = QFontDatabase.applicationFontFamilies(font_id)
         return families[0]
