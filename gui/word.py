@@ -1,6 +1,7 @@
 """
 Fields for word input and output in the window.
 """
+
 from PyQt6.QtWidgets import QLineEdit, QLabel
 from PyQt6.QtGui import QFont
 from PyQt6.QtCore import Qt
