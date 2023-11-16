@@ -21,7 +21,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.wrd_input = WordInputField()
+        self.wrd_input = WordInputField(slot=self.slot_output)
         self.wrd_out = WordOutputField()
         self.scroll_box = ScrollDefinitions()
         self.set_ui()
@@ -35,10 +35,10 @@ class MainWindow(QMainWindow):
         self.setGeometry(0, 0, 380, 450)
         self.center_window()
 
-        widget = QWidget()
-        widget.setLayout(self.set_main_layout())
-        widget.setContentsMargins(20, 0, 20, 20)
-        self.setCentralWidget(widget)
+        central_widget = QWidget(parent=self)
+        central_widget.setLayout(self.set_main_layout())
+        central_widget.setContentsMargins(20, 0, 20, 20)
+        self.setCentralWidget(central_widget)
 
     def set_main_layout(self):
         """Layout contains all the elements of the main window."""
@@ -74,14 +74,6 @@ class MainWindow(QMainWindow):
         btn.clicked.connect(self.slot_output)
 
         return nest_layout
-
-    def keyPressEvent(self, event):
-        """Handle Enter key pressed in word input field."""
-
-        if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
-            self.slot_output()
-        else:
-            super().keyPressEvent(event)
 
     def slot_output(self):
         """Output definitions to the scroll area."""

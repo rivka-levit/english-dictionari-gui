@@ -10,8 +10,9 @@ from PyQt6.QtCore import Qt
 class WordInputField(QLineEdit):
     """Text field to enter a word."""
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, slot=None):
+        super(WordInputField, self).__init__()
+        self.slot = slot
         self.set_ui()
 
     def set_ui(self):
@@ -32,6 +33,14 @@ class WordInputField(QLineEdit):
                 }
             """
         )
+
+    def keyPressEvent(self, event):
+        """Handle Enter key pressed in word input field."""
+
+        if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
+            self.slot()
+        else:
+            super().keyPressEvent(event)
 
 
 class WordOutputField(QLabel):
