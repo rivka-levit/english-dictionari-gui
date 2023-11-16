@@ -1,5 +1,5 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QIcon, QFont
+from PyQt6.QtGui import QIcon, QFont, QFontDatabase
 from PyQt6.QtWidgets import (
     QMainWindow,
     QWidget,
@@ -23,18 +23,15 @@ class MainWindow(QMainWindow):
         self.wrd_input = QLineEdit()
         self.wrd_out = QLabel('')
         self.definitions = QLabel('')
-        self._set_main_window()
+        self.font_bello = self.add_font('assets/Bello-SmCp.ttf')
+        self.font_franklin = self.add_font('assets/FrGoth-MdReg.ttf')
+        self.set_ui()
 
-    def _set_main_window(self):
+    def set_ui(self):
         self.setWindowIcon(QIcon('assets/icon.svg'))
         self.setWindowTitle('Word Definition')
         self.setGeometry(0, 0, 380, 450)
         self._center()
-
-        widget = QWidget()
-        widget.setLayout(self._set_main_layout())
-        widget.setContentsMargins(20, 20, 20, 20)
-        self.setCentralWidget(widget)
         self.setStyleSheet(
             """
                 QWidget {
@@ -43,39 +40,50 @@ class MainWindow(QMainWindow):
             """
         )
 
-    def _set_main_layout(self):
+        widget = QWidget()
+        widget.setLayout(self.set_main_layout())
+        widget.setContentsMargins(20, 0, 20, 20)
+        self.setCentralWidget(widget)
+
+    @staticmethod
+    def add_font(filename):
+        font_id = QFontDatabase.addApplicationFont(filename)
+        families = QFontDatabase.applicationFontFamilies(font_id)
+        return families[0]
+
+    def set_main_layout(self):
         main_layout = QVBoxLayout()
         main_layout.setSpacing(15)
 
         header = QLabel('Word Definition')
-        header.setFont(QFont('Helvetica', 18, 900))
+        header.setFont(QFont(self.font_bello, 28, 900))
         header.setStyleSheet(
             """
                 QLabel {
                     color: #7895b2;
-                    margin-bottom: 8px;
                 }
             """
         )
         main_layout.addWidget(header, alignment=Qt.AlignmentFlag.AlignHCenter)
 
-        self._set_nested_layout()
-        main_layout.addLayout(self._set_nested_layout())
+        self.set_nested_layout()
+        main_layout.addLayout(self.set_nested_layout())
 
         self.wrd_out.setFont(QFont('Helvetica', 14, weight=700))
         self.wrd_out.setFixedHeight(50)
         self.wrd_out.setStyleSheet(
             f'qproperty-alignment: {Qt.AlignmentFlag.AlignCenter}; '
-            f'border: 2px solid #fefcf9; '
             f'border-radius: 5px; '
             f'padding: 8px; '
             f'color: #31373e;'
+            f'background-color: #fefcf9;'
         )
         main_layout.addWidget(self.wrd_out)
 
         self.definitions.setMinimumHeight(100)
         self.definitions.setWordWrap(True)
         self.definitions.setFont(QFont('Helvetica', 10))
+        self.definitions.setStyleSheet('background-color: #fefcf9;')
 
         scroll_box = QScrollArea()
         scroll_box.setVerticalScrollBarPolicy(
@@ -88,10 +96,10 @@ class MainWindow(QMainWindow):
         scroll_box.setStyleSheet(
             """
                 QScrollArea {
-                    border: 2px solid #fefcf9;
                     border-radius: 5px;
                     padding: 10px 0 10px 10px;
                     color: #31373e;
+                    background-color: #fefcf9;
                 }
             """
         )
@@ -101,7 +109,7 @@ class MainWindow(QMainWindow):
 
         return main_layout
 
-    def _set_nested_layout(self):
+    def set_nested_layout(self):
         nest_layout = QHBoxLayout()
 
         self.wrd_input.setFont(QFont('Helvetica', 14))
@@ -122,11 +130,11 @@ class MainWindow(QMainWindow):
 
         btn = QPushButton('Send')
         btn.setFixedHeight(40)
-        btn.setFont(QFont('Helvetica', 16))
+        btn.setMinimumWidth(80)
+        btn.setFont(QFont(self.font_franklin, 18))
         btn.setStyleSheet(
             """
                 QPushButton {
-                    padding: 6px;
                     background-color: #7895b2;
                     color: #f5efe6;
                     border-radius: 5px;
