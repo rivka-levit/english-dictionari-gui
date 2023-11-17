@@ -11,9 +11,10 @@ from .fonts import CustomFonts
 class SendButton(QPushButton):
     """Button to send a word to the dictionary."""
 
-    def __init__(self):
+    def __init__(self, slot=None):
         super().__init__()
         self.set_ui()
+        self.clicked.connect(slot=slot)
 
     def set_ui(self):
         """Set user interface."""
