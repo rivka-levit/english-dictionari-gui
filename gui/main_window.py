@@ -24,6 +24,7 @@ class MainWindow(QMainWindow):
         self.wrd_input = WordInputField(slot=self.slot_output)
         self.wrd_out = WordOutputField()
         self.scroll_box = ScrollDefinitions()
+        self.fonts = CustomFonts()
         self.set_ui()
 
     def set_ui(self):
@@ -47,7 +48,7 @@ class MainWindow(QMainWindow):
         main_layout.setSpacing(15)
 
         header = QLabel('Word Definition')
-        header.setFont(QFont(CustomFonts().bello, 28, 900))
+        header.setFont(QFont(self.fonts.bello, 28, 900))
         header.setStyleSheet('color: #7895b2;')
         main_layout.addWidget(header, alignment=Qt.AlignmentFlag.AlignHCenter)
 
@@ -69,7 +70,7 @@ class MainWindow(QMainWindow):
         nest_layout = QHBoxLayout()
         nest_layout.addWidget(self.wrd_input, stretch=5)
 
-        btn = SendButton(self.slot_output)
+        btn = SendButton(slot=self.slot_output)
         nest_layout.addWidget(btn, stretch=1)
 
         return nest_layout

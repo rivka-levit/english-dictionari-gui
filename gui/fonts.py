@@ -6,7 +6,7 @@ from PyQt6.QtGui import QFontDatabase
 
 
 class CustomFonts:
-    """Set custom font to use in the app."""
+    """Custom fonts for the application."""
 
     def __init__(self):
         self.bello = self.add_font('assets/Bello-SmCp.ttf')
