@@ -5,14 +5,13 @@ Buttons for the app.
 from PyQt6.QtWidgets import QPushButton
 from PyQt6.QtGui import QFont
 
-from .fonts import CustomFonts
-
 
 class SendButton(QPushButton):
     """Button to send a word to the dictionary."""
 
-    def __init__(self, slot=None):
+    def __init__(self, slot=None, fonts=None):
         super().__init__()
+        self.fonts = fonts
         self.set_ui()
         self.clicked.connect(slot=slot)
 
@@ -22,7 +21,7 @@ class SendButton(QPushButton):
         self.setText('Send')
         self.setFixedHeight(40)
         self.setMinimumWidth(80)
-        self.setFont(QFont(CustomFonts().fr_goth, 18))
+        self.setFont(QFont(self.fonts.fr_goth, 18))
         self.setStyleSheet(
             """
                 QPushButton {

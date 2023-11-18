@@ -70,7 +70,7 @@ class MainWindow(QMainWindow):
         nest_layout = QHBoxLayout()
         nest_layout.addWidget(self.wrd_input, stretch=5)
 
-        btn = SendButton(slot=self.slot_output)
+        btn = SendButton(slot=self.slot_output, fonts=self.fonts)
         nest_layout.addWidget(btn, stretch=1)
 
         return nest_layout
